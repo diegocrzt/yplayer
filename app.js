@@ -49,7 +49,7 @@ function lookup(query) {
 				if (parseInt(input) != NaN) {
 					if (!fs.existsSync(getLocation('download', results[input].title))) {
 						dl.exec(results[input].link, ['-x', '--audio-format', 'mp3', '-o', getLocation('download', results[input].title)], {}, function (err, output) {
-							if (err) process.stderr.write(err);
+							if (err) process.stderr.write(err.toString());
 							play(getLocation('download', results[input].title));
 						});
 					}
