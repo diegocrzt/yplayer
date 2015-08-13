@@ -17,8 +17,8 @@
     "start": "node app.js"
   },
   "bin": {
-    "ytm": "node app.js",
-    "yplayer": "node app.js"
+    "ytm": "app.js",
+    "yplayer": "app.js"
   },
   "repository": {
     "type": "git",
