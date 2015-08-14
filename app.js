@@ -4,7 +4,8 @@ var fs = require('fs');
 var readline = require('readline-sync');
 var chalk = require('chalk');
 
-require('readline').createInterface({input : process.stdin, output : process.stdout}); //For some reason you need to require this in order for the music player to interpret the process.stdin (?)
+// FIXME: In order for the input piping to mplayer to work I need to require this.
+require('readline').createInterface({input : process.stdin, output : process.stdout});
 
 var search = require('youtube-search');
 var dl = require('youtube-dl');
@@ -44,7 +45,8 @@ function lookup(query) {
     var input = readline.questionInt('What song do you want to play? #');
     console.reset();
     if (!fs.existsSync(get_location('music') + make_safe(results[input].title) + '.mp3')) {
-      cli.spinner('Downloading song');
+      cli.spinner('Downloading ' + make_safe(results[input].title));
+      // FIXME: Change the download module to node-ytdl-core instead of youtube-dl
       dl.exec(results[input].link, ['-x', '--audio-format', 'mp3', '-o', get_location('music') + make_safe(results[input].title) + '.%(ext)s'], {}, function (err, output) {
         if (err) cli.error(err);
         cli.spinner('', true);
