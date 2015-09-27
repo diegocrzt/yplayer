@@ -12,11 +12,15 @@ npm install yplayer -g
 
 ##Usage :
 ```
-yplayer vx.x.x, by: Bram "#96AA48" van der Veen
-Usage : yplayer [options] <-s song>
-	-s <song>, --song <song>	Song to listen to
-	[-o], [--offline]		Offline mode/listen to cached songs
-	[-h], [--help]			Display helpful information (this stuff)
+Usage:
+  yplayer [OPTIONS] [ARGS]
+
+Options:
+  -s, --song             The song you want to download/play.
+  -d, --downloadonly     If you only want to download the song instead of
+                         playing it
+  -h, --help             Display help and usage details
+
 
 ```
 
