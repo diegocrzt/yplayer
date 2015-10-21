@@ -46,7 +46,7 @@ function settings() {
       'apikey': 'add_your_youtube_api_code_here'
     };
 
-    fs.writeFileSync(getLocation('settings'), JSON.stringify(settings, 0, 2));
+    fs.writeFileSync(getLocation('settings'), JSON.stringify(settings, null, 2));
     cli.fatal('Go to ~/.yplayerrc and add Youtube Data API key.');
   }
   else {
