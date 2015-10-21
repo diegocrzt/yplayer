@@ -11,7 +11,6 @@ var mplayer = require('child_process').spawn;
 cli.parse({
   song: ['s', 'The song you want to download/play.'],
   downloadonly: ['d', 'If you only want to download the song instead of playing it'],
-  // offline: ['o', 'If you want to listen to already downloaded songs']
 });
 
 cli.main(function (args, options) {
@@ -19,9 +18,6 @@ cli.main(function (args, options) {
   if (options.song) {
     lookup(args.join(' '));
   }
-  // else if (options.offline) {
-  //   offline();
-  // }
 });
 
 
@@ -50,8 +46,8 @@ function settings() {
       'apikey': 'add_your_youtube_api_code_here'
     };
 
-    fs.writeFileSync(getLocation('settings'), JSON.stringify(settings));
-    cli.fatal('Go to ~/.yplayerrc and add your email and password');
+    fs.writeFileSync(getLocation('settings'), JSON.stringify(settings, 0, 2));
+    cli.fatal('Go to ~/.yplayerrc and add Youtube Data API key.');
   }
   else {
     var settings = JSON.parse(fs.readFileSync(getLocation('settings')));
