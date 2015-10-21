@@ -4,7 +4,7 @@ var fs = require('fs');
 var http = require('https');
 var readline = require('readline-sync');
 var chalk = require('chalk');
-var search = require('youtube-search');
+var search = require('youtube-crawler');
 var dl = require('ytdl-core');
 var mplayer = require('child_process').spawn;
 
@@ -23,13 +23,11 @@ cli.main(function (args, options) {
 
 function lookup(query) {
   cli.spinner('Looking up requested song');
-  search(query, {key : settings().apikey}, function (err, results) {
-    if (err) cli.error(err);
+  search(query, function (results) {
+ //   if (err) cli.error(err);
     process.stdout.write('\n');
     for (i = 0; i < results.length; i++) {
-      if (results[i].kind != 'youtube#channel' && results[i].kind != 'youtube#playlist') {
-          console.log(chalk.red('[') + i + chalk.red('] ') + chalk.white(results[i].title));
-      }
+      console.log(chalk.red('[') + i + chalk.red('] ') + chalk.white(results[i].title));
     }
 
     cli.spinner('', true);

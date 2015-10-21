@@ -9,7 +9,7 @@
     "colors": "^0.6.2",
     "readline-sync": "^1.2.19",
     "underscore": "^1.6.0",
-    "youtube-search": "^1.0.2",
+    "youtube-crawler": "0.0.1",
     "ytdl-core": "^0.6.0"
   },
   "devDependencies": {},
