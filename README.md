@@ -15,11 +15,12 @@ Usage:
 Options:
   -s, --song             The song you want to play.
   -v, --video            The video you want to watch.
-  -q, --quality          The quality you want to watch/play your media. ([Youtube's itag values](https://en.wikipedia.org/wiki/Youtube#Quality_and_formats))
+  -q, --quality          The quality you want to watch/play your media.
   -h, --help             Display help and usage details
 
 
 ```
+Check [here](https://en.wikipedia.org/wiki/Youtube#Quality_and_formats) for Youtube's quality options (itag values).
 
 ## License
 Check the `LICENSE.md` for more information.
