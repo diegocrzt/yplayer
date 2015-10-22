@@ -1,6 +1,6 @@
 {
   "name": "yplayer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Listen to/watch youtube videos from the CLI!",
   "main": "app.js",
   "dependencies": {
