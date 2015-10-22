@@ -23,8 +23,8 @@ cli.main(function (args, options) {
 
 function lookup(query) {
   cli.spinner('Looking up requested song');
-  search(query, function (results) {
- //   if (err) cli.error(err);
+  search(query, function (err, results) {
+    if (err) cli.error(err);
     process.stdout.write('\n');
     for (i = 0; i < results.length; i++) {
       console.log(chalk.red('[') + i + chalk.red('] ') + chalk.white(results[i].title));
@@ -33,7 +33,6 @@ function lookup(query) {
     cli.spinner('', true);
 
     var input = readline.questionInt('What song do you want to play? #');
-
     download(results[input]);
   });
 }
