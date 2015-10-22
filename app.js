@@ -60,8 +60,8 @@ function settings() {
 
 function play(file) {
   var player = mplayer('mplayer', [getLocation(cliOptions.video ? 'video' : 'music') + file]);
-  var isfiltered = true;
-  
+  var isfiltered = false;
+
   console.log('Playing ' + file + '\n');
 
   player.stdout.on('data', function (data) {
@@ -89,8 +89,18 @@ function download(track) {
 
   if (!fs.existsSync(getLocation(video ? 'video' : 'music') + songname)) {
     var options = (video ? {filter: 'video', quality: cliOptions.quality || settings().quality || 'highest'} : {filter: 'audioonly'});
+    var size = 0;
     var stream = dl(track.link, options);
     stream.pipe(fs.createWriteStream(getLocation(video ? 'video' : 'music') + songname));
+
+    stream.on('info', function (info, format) {
+      size = parseInt(format.size);
+    });
+
+    stream.on('data', function () {
+      var fileSize = fs.statSync(getLocation(video ? 'video' : 'music') + songname).size;
+      cli.progress(fileSize / size);
+    });
 
     stream.on('end', function () {
       play(songname);
