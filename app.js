@@ -22,8 +22,6 @@ cli.main(function (args, options) {
   settings();
   cliOptions = options;
 
-  console.log(options);
-
   if (options.song || options.video) {
     lookup(options.song || options.video);
   }
