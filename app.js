@@ -40,17 +40,13 @@ function lookup(query) {
 
 function settings() {
   if (!fs.existsSync(getLocation('settings'))) {
-    var settings = {
-      'apikey': 'add_your_youtube_api_code_here'
-    };
+    var settings = {};
 
     fs.writeFileSync(getLocation('settings'), JSON.stringify(settings, null, 2));
-    cli.fatal('Go to ~/.yplayerrc and add Youtube Data API key.');
+    return settings;
   }
   else {
-    var settings = JSON.parse(fs.readFileSync(getLocation('settings')));
-    if (settings.apikey == 'add_your_youtube_api_code_here') cli.fatal('Go to ~/.yplayerrc and add Youtube Data API key.');
-    else return settings;
+    return JSON.parse(fs.readFileSync(getLocation('settings')));
   }
 }
 
