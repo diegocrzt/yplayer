@@ -71,6 +71,8 @@ function play(file) {
     }
   });
 
+  player.on('exit', process.exit);
+
   // FIXME: In order for the input piping to mplayer to work I need to require this.
   require('readline').createInterface({input : process.stdin, output : process.stdout});
   process.stdin.pipe(player.stdin);
@@ -84,8 +86,6 @@ function play(file) {
 function download(track) {
   var video = cliOptions.video;
   var songname = makeSafe(track.title) + (video ? '.mp4' : '.mp3');
-
-  console.log(settings().quality);
 
   if (!fs.existsSync(getLocation(video ? 'video' : 'music') + songname)) {
     var options = (video ? {filter: 'video', quality: settings().quality || 'highest'} : {filter: 'audioonly'});
