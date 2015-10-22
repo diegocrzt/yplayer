@@ -7,6 +7,7 @@
     "chalk": "^1.1.0",
     "cli": "^0.9.0",
     "colors": "^0.6.2",
+    "mkdirp": "^0.5.1",
     "readline-sync": "^1.2.19",
     "underscore": "^1.6.0",
     "youtube-crawler": "0.0.2",

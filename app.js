@@ -7,15 +7,22 @@ var chalk = require('chalk');
 var search = require('youtube-crawler');
 var dl = require('ytdl-core');
 var mplayer = require('child_process').spawn;
+var mkdirp = require('mkdirp');
+
+var cliOptions;
 
 cli.parse({
   song: ['s', 'The song you want to download/play.'],
-  downloadonly: ['d', 'If you only want to download the song instead of playing it'],
+  video: ['v', 'The video you want to download/play.'],
+ // quality: ['q','The quality of the video/song']
+ // downloadonly: ['d', 'If you only want to download the song instead of playing it'],
 });
 
 cli.main(function (args, options) {
   settings();
-  if (options.song) {
+  cliOptions = options;
+
+  if (options.song || options.video) {
     lookup(args.join(' '));
   }
 });
@@ -39,7 +46,9 @@ function lookup(query) {
 
 function settings() {
   if (!fs.existsSync(getLocation('settings'))) {
-    var settings = {};
+    var settings = {
+      quality: 'highest'
+    };
 
     fs.writeFileSync(getLocation('settings'), JSON.stringify(settings, null, 2));
     return settings;
@@ -50,9 +59,9 @@ function settings() {
 }
 
 function play(file) {
-  var player = mplayer('mplayer', ['-ao','alsa', getLocation('music') + file]);
-  var isfiltered = false;
-
+  var player = mplayer('mplayer', [getLocation(cliOptions.video ? 'video' : 'music') + file]);
+  var isfiltered = true;
+  
   console.log('Playing ' + file + '\n');
 
   player.stdout.on('data', function (data) {
@@ -73,15 +82,19 @@ function play(file) {
 }
 
 function download(track) {
-  var songname = makeSafe(track.title) + '.mp3';
+  var video = cliOptions.video;
+  var songname = makeSafe(track.title) + (video ? '.mp4' : '.mp3');
 
-  if (!fs.existsSync(getLocation('music') + songname)) {
-    var stream = dl(track.link, {filter : 'audioonly'});
-    stream.pipe(fs.createWriteStream(getLocation('music') + songname));
+  console.log(settings().quality);
+
+  if (!fs.existsSync(getLocation(video ? 'video' : 'music') + songname)) {
+    var options = (video ? {filter: 'video', quality: settings().quality || 'highest'} : {filter: 'audioonly'});
+    var stream = dl(track.link, options);
+    stream.pipe(fs.createWriteStream(getLocation(video ? 'video' : 'music') + songname));
 
     stream.on('end', function () {
       play(songname);
-    })
+    });
   }
   else {
     console.log('Song already found in offline storage, playing that instead.');
@@ -94,12 +107,18 @@ function getLocation(type) {
 
   switch (type) {
     case 'settings':
-      return prefix + process.env['USER'] + '/.yplayerrc';
+      var location = prefix + process.env['USER'] + '/.yplayerrc';
     break;
     case 'music':
-      return prefix + process.env['USER'] + '/Music/';
+      var location = prefix + process.env['USER'] + '/Music/';
+      mkdirp.sync(location);
     break;
+    case 'video':
+      var location = prefix + process.env['USER'] + '/Videos/';
+      mkdirp.sync(location);
+    break
   }
+  return location;
 }
 
 function makeSafe(str) {
