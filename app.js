@@ -12,8 +12,8 @@ var mkdirp = require('mkdirp');
 var cliOptions;
 
 cli.parse({
-  song: ['s', 'The song you want to download/play.', 'string'],
-  video: ['v', 'The video you want to download/play.', 'string'],
+  song: ['s', 'The song you want to play.', 'string'],
+  video: ['v', 'The video you want to watch.', 'string'],
   quality: ['q','The quality of the video/song', 'int']
  // downloadonly: ['d', 'If you only want to download the song instead of playing it'],
 });
