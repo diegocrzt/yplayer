@@ -6,6 +6,7 @@ var readline = require('readline-sync');
 var chalk = require('chalk');
 var search = require('youtube-crawler');
 var dl = require('ytdl-core');
+var os = require('os');
 var mplayer = require('child_process').spawn;
 var mkdirp = require('mkdirp');
 
@@ -59,7 +60,7 @@ function settings() {
 }
 
 function play(file) {
-  var player = mplayer('mplayer', [getLocation(cliOptions.video ? 'video' : 'music') + file]);
+  var player = mplayer('mplayer', mplayerArgs(getLocation(cliOptions.video ? 'video' : 'music') + file));
   var isfiltered = false;
 
   console.log('Playing ' + file + '\n');
@@ -113,23 +114,34 @@ function download(track) {
 }
 
 function getLocation(type) {
-  var prefix = '/home/';
-
   switch (type) {
     case 'settings':
-      var location = prefix + process.env['USER'] + '/.yplayerrc';
+      var location = process.env['HOME'] + '/.yplayerrc';
     break;
     case 'music':
-      var location = prefix + process.env['USER'] + '/Music/yplayer/';
+      var location = process.env['HOME'] + '/Music/yplayer/';
       mkdirp.sync(location);
     break;
     case 'video':
-      var location = prefix + process.env['USER'] + '/Videos/yplayer/';
+      var location = process.env['HOME'] + '/Videos/yplayer/';
       mkdirp.sync(location);
     break
   }
   return location;
 }
+
+function mplayerArgs (filename) {
+  var audioEngines = {
+    linux: 'alsa',
+    darwin: 'coreaudio'
+  }
+
+  var audioEngine = audioEngines[os.platform()];
+
+  return ['-ao', audioEngine, filename];
+}
+
+
 
 function makeSafe(str) {
   return str.replace(/\//g, ' ');
