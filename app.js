@@ -138,10 +138,11 @@ function mplayerArgs (filename) {
   }
 
   var audioEngine = audioEngines[os.platform()];
-  if ( typeof cliOptions.loop !== 'undefined' ) {
-      var loops = cliOptions.loop;
+
+  if (typeof cliOptions.loop !== 'undefined' && cliOptions.loop !== null) {
+    var loops = cliOptions.loop;
   } else {
-      var loops = "0";
+     var loops = 1;
   }
   return ['-loop', loops, '-ao', audioEngine, filename];
 }
