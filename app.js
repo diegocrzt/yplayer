@@ -89,7 +89,7 @@ function download(track) {
   var songname = makeSafe(track.title) + (video ? '.mp4' : '.mp3');
 
   if (!fs.existsSync(getLocation(video ? 'video' : 'music') + songname)) {
-    var options = (video ? {filter: 'video', quality: cliOptions.quality || settings().quality || 'highest'} : {filter: 'audioonly'});
+    var options = (video ? {filter: 'video', quality: cliOptions.quality || settings().quality || 'highest'} : {filter: 'audioonly', quality: cliOptions.quality || settings().quality || 'highest'});
     var size = 0;
     var stream = dl(track.link, options);
     stream.pipe(fs.createWriteStream(getLocation(video ? 'video' : 'music') + songname));
