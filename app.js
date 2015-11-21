@@ -15,7 +15,8 @@ var cliOptions;
 cli.parse({
   song: ['s', 'The song you want to play.', 'string'],
   video: ['v', 'The video you want to watch.', 'string'],
-  quality: ['q','The quality of the video/song', 'int']
+  quality: ['q','The quality of the video/song', 'int'],
+  loop: ['l', 'Number of times to loop. 0 = Infinite.', 'int']
  // downloadonly: ['d', 'If you only want to download the song instead of playing it'],
 });
 
@@ -138,7 +139,12 @@ function mplayerArgs (filename) {
 
   var audioEngine = audioEngines[os.platform()];
 
-  return ['-ao', audioEngine, filename];
+  if (typeof cliOptions.loop !== 'undefined' && cliOptions.loop !== null) {
+    var loops = cliOptions.loop;
+  } else {
+     var loops = 1;
+  }
+  return ['-loop', loops, '-ao', audioEngine, filename];
 }
 
 
