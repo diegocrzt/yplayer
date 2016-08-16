@@ -25,18 +25,24 @@ cli.main(function (args, options) {
   settings();
   cliOptions = options;
 
-  if (options.song || options.video) {
-    lookup(options.song || options.video);
+  if (options.song || options.video || options.rightnow ) {
+    lookup(options.song || options.video || options.rightnow, options);
   }
 });
 
 
-function lookup(query) {
+function lookup(query, options) {
   cli.spinner('Looking up requested song');
   search(query, function (err, results) {
     if (err) cli.error(err);
     process.stdout.write('\n');
-    if( ! options.rightnow) {
+    //console.log(results);
+    console.log(options.rightnow);
+    console.log(options);
+    if(options.rightnow) {
+      cli.spinner('', true);
+      download(results[0]);
+    }else{
       for (i = 0; i < results.length; i++) {
         console.log(chalk.red('[') + i + chalk.red('] ') + chalk.white(results[i].title));
       }
@@ -45,8 +51,6 @@ function lookup(query) {
   
       var input = readline.questionInt('What song do you want to play? #');
       download(results[input]);
-    }else{
-      download(results[0]);
     }
     
   });
